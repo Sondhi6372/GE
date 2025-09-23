@@ -79,9 +79,9 @@ document.getElementById('homeworkForm').addEventListener('submit', async functio
 
     try {
         // Replace with your Google Apps Script Web App URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbymrvFxwDCBJdpIBMGBK_2ZPbDDQ_HzOEXAIyN6jKEAOwF5UEmAsnz9-jScO3Ev5FqA/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw3VK6yPAPzLX4MNsLvShOR9cD-Fd75ZVFr2DtVPlccLlxnBgRpRTc_Kw2Lay-ESBF2Vw/exec';
 
-        const response = await fetch('https://script.google.com/macros/s/AKfycbymrvFxwDCBJdpIBMGBK_2ZPbDDQ_HzOEXAIyN6jKEAOwF5UEmAsnz9-jScO3Ev5FqA/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbw3VK6yPAPzLX4MNsLvShOR9cD-Fd75ZVFr2DtVPlccLlxnBgRpRTc_Kw2Lay-ESBF2Vw/exec', {
             method: 'POST',
             body: formData
         });
