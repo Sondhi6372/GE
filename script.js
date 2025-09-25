@@ -16,6 +16,7 @@ function createParticle() {
 setInterval(createParticle, 2000);
 
 // Form submission
+// test comment
 document.getElementById('homeworkForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
