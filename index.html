@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="th">
-    
 
 <head>
     <meta charset="UTF-8">
@@ -11,24 +10,24 @@
 
 <body>
     <div class="loading">
-        <div class="spinner"></div>
+        <div class="spinner">
+            <div class="spinner-text">กำลังบันทึกข้อมูล</div>
+            <div class="spinner-dots">
+                <div class="spinner-dot"></div>
+                <div class="spinner-dot"></div>
+                <div class="spinner-dot"></div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
-        <div class="success-message" id="successMessage">
-            ✅ บันทึกข้อมูลสำเร็จแล้ว! ข้อมูลได้ถูกส่งไปยัง Google Sheets
-        </div>
-
-        <div class="error-message" id="errorMessage">
-            ❌ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง
-        </div>
-
         <div class="header">
             <div class="logo">CoE</div>
             <h1>ฟอร์มเก็บข้อมูลการบ้าน</h1>
             <p class="subtitle">คณะวิศวกรรมคอมพิวเตอร์</p>
         </div>
 
+        <!-- เอา action และ method ออก เพื่อให้ JavaScript จัดการ -->
         <form id="homeworkForm">
             <div class="form-group">
                 <label for="assignment">ชื่อการบ้าน <span class="required">*</span></label>

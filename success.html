@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกข้อมูลสำเร็จ - คณะวิศวกรรมคอมพิวเตอร์</title>
+    <link rel="stylesheet" href="success-styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="success-page">
+            <div class="success-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="#16a34a"/>
+                    <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <h1 class="success-title">บันทึกข้อมูลเรียบร้อยแล้ว</h1>
+            <p class="success-message">ข้อมูลการบ้านของคุณได้ถูกบันทึกเรียบร้อยแล้ว</p>
+            
+            <div class="submitted-data">
+                <h3>ข้อมูลที่บันทึก:</h3>
+                <div class="data-display" id="dataDisplay">
+                    <!-- ข้อมูลจะถูกแสดงที่นี่ -->
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button onclick="submitAnother()" class="submit-another-btn">บันทึกข้อมูลใหม่</button>
+            </div>
+            
+            <div class="footer">
+                <p>© 2025 คณะวิศวกรรมคอมพิวเตอร์ | ระบบจัดการการบ้าน</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ฟังก์ชันแสดงข้อมูลที่ส่งมา
+        function displaySubmittedData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dataDisplay = document.getElementById('dataDisplay');
+            
+            if (urlParams.size === 0) {
+                dataDisplay.innerHTML = '<p class="no-data">ไม่พบข้อมูลที่ส่ง</p>';
+                return;
+            }
+            
+            // จัดรูปแบบเวลา
+            function formatDateTime(dateTimeStr) {
+                if (!dateTimeStr) return 'ไม่ระบุ';
+                const date = new Date(dateTimeStr);
+                return date.toLocaleString('th-TH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            const data = {
+                assignment: urlParams.get('assignment') || 'ไม่ระบุ',
+                subject: urlParams.get('subject') || 'ไม่ระบุ',
+                subjectCode: urlParams.get('subjectCode') || 'ไม่ระบุ',
+                section: urlParams.get('section') || 'ไม่ระบุ',
+                dueTime: formatDateTime(urlParams.get('dueTime')),
+                email: urlParams.get('email') || 'ไม่ระบุ',
+                description: urlParams.get('description') || 'ไม่มี'
+            };
+            
+            dataDisplay.innerHTML = `
+                <div class="data-item">
+                    <span class="data-label">ชื่อการบ้าน</span>
+                    <span class="data-value">${data.assignment}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">ชื่อวิชา</span>
+                    <span class="data-value">${data.subject}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">รหัสวิชา</span>
+                    <span class="data-value">${data.subjectCode}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">เซคชั่น</span>
+                    <span class="data-value">${data.section}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">เวลาส่ง</span>
+                    <span class="data-value">${data.dueTime}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">อีเมล</span>
+                    <span class="data-value">${data.email}</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">รายละเอียดเพิ่มเติม</span>
+                    <span class="data-value">${data.description}</span>
+                </div>
+            `;
+        }
+        
+        // ฟังก์ชันไปหน้าบันทึกใหม่
+        function submitAnother() {
+            window.location.href = 'index.html';
+        }
+        
+        // แสดงข้อมูลเมื่อโหลดหน้า
+        document.addEventListener('DOMContentLoaded', displaySubmittedData);
+    </script>
+</body>
+
+</html>

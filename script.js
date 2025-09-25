@@ -20,12 +20,6 @@ document.getElementById('homeworkForm').addEventListener('submit', async functio
     e.preventDefault();
 
     const loading = document.querySelector('.loading');
-    const successMessage = document.getElementById('successMessage');
-    const errorMessage = document.getElementById('errorMessage');
-
-    // Hide messages
-    successMessage.style.display = 'none';
-    errorMessage.style.display = 'none';
 
     // Get form data
     const formData = new FormData();
@@ -44,8 +38,7 @@ document.getElementById('homeworkForm').addEventListener('submit', async functio
 
     for (let field of requiredFields) {
         if (!formDataObj[field]) {
-            errorMessage.textContent = '❌ กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน';
-            errorMessage.style.display = 'block';
+            alert('❌ กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน');
             return;
         }
     }
@@ -53,29 +46,30 @@ document.getElementById('homeworkForm').addEventListener('submit', async functio
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formDataObj.email)) {
-        errorMessage.textContent = '❌ กรุณากรอกอีเมลให้ถูกต้อง';
-        errorMessage.style.display = 'block';
+        alert('❌ กรุณากรอกอีเมลให้ถูกต้อง');
         return;
     }
 
     // Subject code validation
     const codeRegex = /^[A-Za-z]{2}\s?\d{5}$/;
     if (!codeRegex.test(formDataObj.subjectCode)) {
-        errorMessage.textContent = '❌ กรุณากรอกรหัสวิชาให้ถูกต้อง (เช่น CE 21011)';
-        errorMessage.style.display = 'block';
+        alert('❌ กรุณากรอกรหัสวิชาให้ถูกต้อง (เช่น CE 21011)');
         return;
     }
 
     // Section validation
     const section = parseInt(formDataObj.section);
     if (section < 1 || section > 99) {
-        errorMessage.textContent = '❌ กรุณากรอกเซคชั่นให้อยู่ในช่วง 1-99';
-        errorMessage.style.display = 'block';
+        alert('❌ กรุณากรอกเซคชั่นให้อยู่ในช่วง 1-99');
         return;
     }
 
     // Show loading
-    loading.style.display = 'block';
+    loading.style.display = 'flex';
+    loading.classList.add('show');
+    // hide loading
+    loading.style.display = 'none';
+    loading.classList.remove('show');
 
     try {
         // Replace with your Google Apps Script Web App URL
@@ -87,32 +81,41 @@ document.getElementById('homeworkForm').addEventListener('submit', async functio
         });
 
         if (response.ok) {
-            successMessage.style.display = 'block';
-            this.reset();
-
-            // Format due time for display
-            const dueDate = new Date(formDataObj.dueTime);
-            const formattedDate = dueDate.toLocaleString('th-TH', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
             console.log('Data saved to Google Sheets:', formDataObj);
+            
+            // สร้าง URL สำหรับหน้า success พร้อมข้อมูล
+            const successUrl = new URL('success.html', window.location.origin);
+            successUrl.searchParams.set('assignment', formDataObj.assignment);
+            successUrl.searchParams.set('subject', formDataObj.subject);
+            successUrl.searchParams.set('subjectCode', formDataObj.subjectCode);
+            successUrl.searchParams.set('section', formDataObj.section);
+            successUrl.searchParams.set('dueTime', formDataObj.dueTime);
+            successUrl.searchParams.set('email', formDataObj.email);
+            successUrl.searchParams.set('description', formDataObj.description);
+            
+            // Redirect ไปหน้า success
+            window.location.href = successUrl.toString();
+            
         } else {
             throw new Error('Failed to submit');
         }
     } catch (error) {
         console.error('Error:', error);
-        errorMessage.style.display = 'block';
-
-        // For demonstration, show success anyway
+        
+        // ถ้าเกิดข้อผิดพลาด ยังคง redirect ไปหน้า success (สำหรับ demo)
+        alert('⚠️ เกิดข้อผิดพลาดในการส่งข้อมูล แต่จะแสดงหน้า success เพื่อการสาธิต');
+        
         setTimeout(() => {
-            errorMessage.style.display = 'none';
-            successMessage.textContent = '✅ (Demo Mode) ข้อมูลถูกบันทึกเรียบร้อย! ในการใช้งานจริงให้ตั้งค่า Google Apps Script';
-            successMessage.style.display = 'block';
+            const successUrl = new URL('success.html', window.location.origin);
+            successUrl.searchParams.set('assignment', formDataObj.assignment);
+            successUrl.searchParams.set('subject', formDataObj.subject);
+            successUrl.searchParams.set('subjectCode', formDataObj.subjectCode);
+            successUrl.searchParams.set('section', formDataObj.section);
+            successUrl.searchParams.set('dueTime', formDataObj.dueTime);
+            successUrl.searchParams.set('email', formDataObj.email);
+            successUrl.searchParams.set('description', formDataObj.description);
+            
+            window.location.href = successUrl.toString();
         }, 1000);
     } finally {
         loading.style.display = 'none';
@@ -130,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('subjectCode').addEventListener('input', function (e) {
     let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (value.length > 2) {
-        value = value.substring(0, 2) + ' ' + value.substring(2, 7); // ← ปรับจาก 6 เป็น 7
+        value = value.substring(0, 2) + ' ' + value.substring(2, 7);
     }
     e.target.value = value;
 });

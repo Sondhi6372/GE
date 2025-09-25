@@ -66,6 +66,10 @@ label {
   color: #374151;
 }
 
+.required {
+  color: #dc2626;
+}
+
 input,
 select,
 textarea {
@@ -121,26 +125,186 @@ textarea {
   color: #6b7280;
 }
 
-.success-message {
-  display: none;
-  background: #16a34a; /* เขียว */
-  color: white;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 500;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .container {
+    padding: 24px 16px;
+    margin: 10px;
+  }
+  
+  h1 {
+    font-size: 20px;
+  }
 }
 
-.error-message {
-  display: none;
-  background: #dc2626; /* แดง */
-  color: white;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 500;
+/* Loading Spinner ใหม่ */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.spinner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
 
+/* แอนิเมชันวงกลมหลัก */
+.spinner::before {
+    content: '';
+    width: 80px;
+    height: 80px;
+    border: 4px solid rgba(249, 115, 22, 0.2);
+    border-top: 4px solid #f97316;
+    border-right: 4px solid #dc2626;
+    border-radius: 50%;
+    animation: spinMain 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    box-shadow: 0 0 25px rgba(249, 115, 22, 0.3);
+}
+
+/* วงกลมเล็กด้านใน */
+.spinner::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(220, 38, 38, 0.3);
+    border-bottom: 2px solid #dc2626;
+    border-radius: 50%;
+    animation: spinInner 1s linear infinite reverse;
+}
+
+/* ข้อความ Loading */
+.spinner-text {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    animation: pulse 2s ease-in-out infinite;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    margin-top: 20px;
+}
+
+/* จุดกระพริบ */
+.spinner-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.spinner-dot {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(45deg, #f97316, #dc2626);
+    border-radius: 50%;
+    animation: bounce 1.4s ease-in-out infinite both;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+}
+
+.spinner-dot:nth-child(1) { animation-delay: -0.32s; }
+.spinner-dot:nth-child(2) { animation-delay: -0.16s; }
+.spinner-dot:nth-child(3) { animation-delay: 0s; }
+
+/* แอนิเมชัน */
+@keyframes spinMain {
+    0% {
+        transform: rotate(0deg) scale(1);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        filter: hue-rotate(90deg);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        filter: hue-rotate(0deg);
+    }
+}
+
+@keyframes spinInner {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0.8) translateY(0px);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1.2) translateY(-10px);
+        opacity: 1;
+    }
+}
+
+/* เอฟเฟ็กต์เพิ่มเติม */
+.loading.show {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(5px);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .spinner::before {
+        width: 60px;
+        height: 60px;
+        border-width: 3px;
+    }
+    
+    .spinner::after {
+        top: 15px;
+        width: 30px;
+        height: 30px;
+        border-width: 2px;
+    }
+    
+    .spinner-text {
+        font-size: 16px;
+        margin-top: 15px;
+    }
+    
+    .spinner-dot {
+        width: 6px;
+        height: 6px;
+    }
+}
